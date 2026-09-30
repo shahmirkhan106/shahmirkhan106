@@ -1,0 +1,47 @@
+name: Update profile art
+
+on:
+  schedule:
+    # 06:17 UTC daily -- an off-the-hour minute avoids the scheduling spike.
+    - cron: "17 6 * * *"
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+# Never let two refreshes race to commit the same file.
+concurrency:
+  group: profile-art
+  cancel-in-progress: true
+
+jobs:
+  heatmap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch contributions
+        run: python scripts/fetch_contributions.py
+
+      - name: Render heatmap
+        run: python scripts/render_heatmap_svg.py
+
+      - name: Verify layout
+        # Re-render the static frame purely so the geometry checks have
+        # something to read; fail the run rather than commit a broken layout.
+        run: |
+          STATIC=1 python scripts/render_heatmap_svg.py
+          python scripts/verify_layout.py
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: refresh contribution graph [skip ci]"
+          file_pattern: |
+            data/contributions.json
+            contrib-heatmap.svg

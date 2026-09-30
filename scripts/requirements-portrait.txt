@@ -1,0 +1,12 @@
+# Only needed to regenerate portrait.svg from a new photo. The scheduled
+# workflow never installs this -- it is ~200MB of wheels for a static asset.
+#
+#   python -m venv .venv && .venv/bin/pip install -r scripts/requirements-portrait.txt
+#   .venv/bin/python scripts/prep_photo.py <photo>
+#   .venv/bin/python scripts/make_ascii_svg.py
+
+pillow==12.3.0
+numpy==2.5.3
+opencv-python-headless==5.0.0.93
+rembg==2.0.85
+onnxruntime==1.30.0

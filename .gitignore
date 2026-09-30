@@ -1,0 +1,10 @@
+# Local portrait-generation environment
+.venv/
+
+# Intermediate + preview output from the generators (the committed .svg files
+# are the real artifacts; STATIC=1 output is only for local inspection).
+source-prepped.png
+*.static.svg
+
+__pycache__/
+*.py[cod]

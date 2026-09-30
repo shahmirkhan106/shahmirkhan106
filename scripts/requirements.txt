@@ -1,0 +1,8 @@
+# Dependencies for the daily GitHub Actions job.
+#
+# Intentionally empty. fetch_contributions.py and render_heatmap_svg.py use
+# only the standard library, which keeps the scheduled workflow fast, and means
+# a dependency or a yanked release can never break the daily refresh.
+#
+# Regenerating the ASCII portrait is a manual, occasional task and does need the
+# image stack -- see requirements-portrait.txt.
